@@ -3,12 +3,29 @@ from flask_cors import CORS
 import requests
 import pandas as pd
 import json
+from dotenv import load_dotenv
+import os
 
-API_KEY = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJncHRtYWtlciIsImlkIjoiM0NGQTZENjQ0RDM0QzEyMDVFNDgwRTFFMEIyMzUyQzMiLCJ0ZW5hbnQiOiIzQ0ZBNkQ2NDREMzRDMTIwNUU0ODBFMUUwQjIzNTJDMyIsInV1aWQiOiI4MWU4N2IyOC1hODYyLTQyNGEtOTU2OS1mZDBjMTI5ZmJlZWYifQ.utRLGf4U3MwHbM0kXQjQvAvzO-qSojBcCe6BM4Wu2gE"
+
 BASE_API = "https://api.gptmaker.ai"
 WORKSPACE_ID = "3CFA6D6451C8A01DAF820E1E0B2352C3"
 
 df_assistants = pd.DataFrame()
+
+def load_api_key():
+    # Carregar variáveis do arquivo .env
+    load_dotenv()
+
+    # Acessar a variável API_KEY
+    api_key = os.getenv('API_KEY')
+
+    if api_key:
+        return api_key
+    else:
+        raise ValueError("API_KEY não encontrada no arquivo .env")
+
+API_KEY = load_api_key()
+
 
 def criar_assistente(name: str, communicationType: str, type: str, supportFor: str, supportWebsite: str, supportDescription: str):
     url = f"https://api.gptmaker.ai/v1/workspace/{WORKSPACE_ID}/assistants"
